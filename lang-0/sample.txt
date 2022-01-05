@@ -1,0 +1,66 @@
+(define list (lambda args args))                                                                                 
+(define map (lambda (fn args)                                                                                    
+    (if (= nil args)                                                                                             
+        nil                                                                                                      
+        (cons (fn (car args))                                                                                    
+              (map fn (cdr args))))))                                                                            
+
+(println (apply + (map (lambda (x) (+ 5 x)) (list 1 2 3))))
+(# prints 21)
+
+(define x 5)
+(define y (lambda () x))
+(println (y)) (# prints 5)
+
+(define x 6)
+(println (y)) (# prints 6)
+
+(define y (lambda () (define x 69) x))
+(println (y)) (# prints 69)
+(println x) (# prints 6)
+
+(define for_range2 (lambda (a b code)
+    (if (< a b)
+        (cons
+            (code a)
+            (for_range2 (+ a 1) b code))
+        nil)))
+
+(define for_range (lambda (x code) (for_range2 0 x code)))
+
+(apply println (for_range 10 (lambda (i) i)))
+(# prints 0 1 2 3 4 5 6 7 8 9)
+
+(println (eval "(begin (define x 5) x)"))
+(# prints 5)
+
+(println x)
+(# prints 6)
+
+(println (exec "(define x 5) x"))
+(# prints 5)
+
+(println x)
+(# prints 5)
+
+
+(# do is the same as begin, except it doesn't create a new scope: )
+
+(define x 420)
+
+(begin
+    (define x 69)
+    (println x)) (# 69)
+
+(println x) (# 420)
+
+(do
+    (define x 1337)
+    (println x)) (# 1337)
+
+(println x) (# 1337)
+
+
+(define print_and_eval (macro (a) (print a ": ") (println (' a))))
+(print_and_eval (+ 69 x)) (# prints (+ 69 x): 1406)
+
